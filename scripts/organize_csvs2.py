@@ -134,6 +134,17 @@ outras_oc_tab = set()
 roubo_tab = set()
 furto_tab = set()
 
+
+delegacias[('0', '0')] = 0
+pessoas[('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',)] = 0
+ocorrencias[('0', '0', '0','0', '0', '0', '0', '0', '0', '0', '0')] = 0
+bos[('0', '0', '0', '0', '0', '0', '0', '0', '0', '0')] = 0
+enderecos[('0', '0', '0', '0', '0', '0', '0', '0')] = 0
+objetos[('0', '0')] = 0
+
+veiculos.add(('0', '0', '0', '0', '0', '0', '0', '0'))
+
+
 # Reading data
 for row in ur:
     # Tuples from data
@@ -218,7 +229,7 @@ for row in ur:
             morte_susp = (str(id_ocorrencia), u'', str(pessoas[pessoa]))
             morte_suspeita_tab.add(morte_susp)
 
-        elif row[25].lower().find(u'homicídio') != -1:
+        elif row[25].lower().find(u'homicídio') != -1 or row[25].lower().find(u'homicidio') != -1:
             if row[25].lower().find(u'simples') != -1:
                 homicidio = (str(id_ocorrencia), u'simples', str(pessoas[pessoa]))
             else:
