@@ -102,14 +102,6 @@ for warq_name in list_of_files:
 
 
 # Organizing data
-
-delegacias = set()
-pessoas = set()
-ocorrencias = set()
-bos = set()
-enderecos = set()
-veiculos = set()
-
 id_delegacia = 1
 id_pessoa = 1
 id_ocorrencia = 1
@@ -117,79 +109,56 @@ id_bo = 1
 id_endereco = 1
 id_veiculo = 1
 
-delegacias_l = []
-pessoas_l = []
-ocorrencias_l = []
-bos_l = []
-enderecos_l = []
-veiculos_l = []
+delegacias = dict()
+pessoas = dict()
+ocorrencias = dict()
+bos = dict()
+enderecos = dict()
+veiculos = dict()
 
 # Reading data
 for row in ur:
     # Tuples from data
     delegacia = (row[22], row[23])
-    pessoa = (row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36], row[37], row[38], row[39], row[40], row[41], row[42], row[43])
-    ocorrencia = (row[1], row[5], row[6], row[7], row[10], row[17], row[18], row[20], row[24], row[25], row[26], row[27])
-    bo = (row[0], row[1], row[2], row[3], row[4], row[8], row[9], row[11], row[21], row[22], row[23])
-    endereco = (row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19])
     veiculo = (row[44], row[45], row[46], row[47], row[48], row[49], row[50], row[51])
+    endereco = (row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19])
+    bo = (row[0], row[1], row[2], row[3], row[4], row[8], row[9], row[11], row[21], row[22], row[23])
+    ocorrencia = (row[1], row[5], row[6], row[7], row[10], row[17], row[18], row[20], row[24], row[25], row[26], row[27])
+    pessoa = (row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36], row[37], row[38], row[39], row[40], row[41], row[42], row[43])
 
-    # Delegacia
     if delegacia not in delegacias:
-        delegacias.add(delegacia)
+        delegacias[delegacia] = id_delegacia
+        id_delegacia += 1
 
-        delegacia.append(id_delegacia)
-        id_delegacia = id_delegacia + 1
+    if veiculo not in veiculos:
+        veiculos[veiculo] = id_veiculo
+        id_veiculo += 1
 
-        delegacias_l.append(delegacia)
-
-    # Endereco
     if endereco not in enderecos:
-        enderecos.add(endereco)
+        enderecos[endereco] = id_endereco
+        id_endereco += 1
 
-        endereco.append(id_endereco)
-        id_endereco = id_endereco + 1
-
-        enderecos_l.append(endereco)
-    else:
-        print(enderecos_l.find(endereco))
-
-    # BO
     if bo not in bos:
-        bos.add(bo)
+        bos[bo] = id_bo
+        id_bo += 1
 
-        bo.append(id_bo)
-        id_bo = id_bo + 1
-
-        bos.append(bo)
-
-    # Ocorrencias
     if ocorrencia not in ocorrencias:
-        ocorrencias.add(ocorrencia)
+        ocorrencias[ocorrencia] = id_ocorrencia
+        id_ocorrencia += 1
 
-        ocorrencia.append(id_ocorrencia)
-        id_ocorrencia = id_ocorrencia + 1
-
-        ocorrencias_l.append(ocorrencia)
-
-    # Pessoas
-    pessoas.add(pessoa)
-
-   
-
-    
-
-    
-
-    # Veiculo
-    veiculos.add(veiculo)
-
-    # Objeto
-
+    if pessoa not in pessoas:
+        pessoas[pessoa] = id_pessoa
+        id_pessoa += 1
 
 # Delegacia
+delegacias_l = []
+for d in delegacias:
+    id_delegacia = delegacias[d]
+    d = list(d)
+    d.append(str(id_delegacia))
+    delegacias_l.append(d)
 
-uw_list[0].writerows(delegacias)
+uw_list[0].writerows(delegacias_l)
 
 # Pessoas
 l_pessoas = []

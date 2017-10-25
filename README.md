@@ -1,1 +1,6 @@
-# projeto1_bd
+# Projeto 1 - BD
+
+Autores:
+Leonardo de Oliveira Ramos
+Isabela Telles
+Pepa
