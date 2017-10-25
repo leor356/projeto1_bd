@@ -119,36 +119,48 @@ veiculos = dict()
 # Reading data
 for row in ur:
     # Tuples from data
+
+   # Delegacia = nome, circunscricao
     delegacia = (row[22], row[23])
-    veiculo = (row[44], row[45], row[46], row[47], row[48], row[49], row[50], row[51])
-    endereco = (row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19])
-    bo = (row[0], row[1], row[2], row[3], row[4], row[8], row[9], row[11], row[21], row[22], row[23])
-    ocorrencia = (row[1], row[5], row[6], row[7], row[10], row[17], row[18], row[20], row[24], row[25], row[26], row[27])
-    pessoa = (row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36], row[37], row[38], row[39], row[40], row[41], row[42], row[43])
 
     if delegacia not in delegacias:
         delegacias[delegacia] = id_delegacia
         id_delegacia += 1
 
+    # Veiculo = placa, UF, CIDADE, COR, MARCA, ANO_FABRICACAO, ANO_MODELO, TIPO_VEICULO
+    veiculo = (row[44], row[45], row[46], row[47], row[48], row[49], row[50], row[51])
+
     if veiculo not in veiculos:
         veiculos[veiculo] = id_veiculo
         id_veiculo += 1
+
+    # Endereco = LOGRADOURO, NUMERO, BAIRRO, CIDADE, UF, LATITUDE, LONGITUDE, DESCRICAOLOCAL
+    endereco = (row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19])
 
     if endereco not in enderecos:
         enderecos[endereco] = id_endereco
         id_endereco += 1
 
+    # bo = ANO_BO, NUM_BO, NUMERO_BOLETIM, BO_INICIADO, BO_EMITIDO, DATAELABORACAO, BO_AUTORIA, NUMERO_BOLETIM_PRINCIPAL, SOLUCAO, ID_DELEGACIA
+    bo = (row[0], row[1], row[2], row[3], row[4], row[8], row[9], row[11], row[21], str(delegacias[delegacia]))
     if bo not in bos:
         bos[bo] = id_bo
         id_bo += 1
 
+    # ocorrencia = ID_BO, DATAOCORRENCIA, PERIDOOCORRENCIA, DATACOMUNICACAO, FLAGRANTE, ID_ENDERECO, EXAME, ESPECIE, RUBRICA, DESDOBRAMENTO, STATUS
+    ocorrencia = (str(bos[bo]), row[5], row[6], row[7], row[10], str(enderecos[endereco]), row[20], row[24], row[25], row[26], row[27])
     if ocorrencia not in ocorrencias:
+
         ocorrencias[ocorrencia] = id_ocorrencia
         id_ocorrencia += 1
 
+    # pessoa = NOMEPESSOA, TIPOPESSOA, VITIMAFATAL, RG, RG_UF, NATURALIDADE, NACIONALIDADE, SEXO, 
+    #   DATANASCIMENTO, IDADE, ESTADOCIVIL, PROFISSAO, GRAUINSTRUCAO, CORCUTIS, NATUREZAVINCULADA, TIPOVINCULO
+    pessoa = (row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36], row[37], row[38], row[39], row[40], row[41], row[42], row[43])
     if pessoa not in pessoas:
         pessoas[pessoa] = id_pessoa
         id_pessoa += 1
+
 
 # Delegacia
 delegacias_l = []
@@ -161,31 +173,43 @@ for d in delegacias:
 uw_list[0].writerows(delegacias_l)
 
 # Pessoas
-l_pessoas = []
-id_pessoa = 1
+pessoas_l = []
 for p in pessoas:
-    lp = list(p)
-    lp.append(str(id_pessoa))
-    l_pessoas.append(lp)
-    id_pessoa += 1
+    id_pessoa = pessoas[p]
+    p = list(p)
+    p.append(str(id_pessoa))
+    pessoas_l.append(p)
 
-uw_list[1].writerows(l_pessoas)
+uw_list[1].writerows(pessoas_l)
 
 # Ocorrencias
-l_ocorrencias = []
-id_ocorrencia = 1
+ocorrencias_l = []
 for o in ocorrencias:
-    lo = list(o)
-    lo.append(str(id_ocorrencia))
-    l_ocorrencias.append(lo)
-    id_ocorrencia += 1
+    id_ocorrencia = ocorrencias[o]
+    o = list(o)
+    o.append(str(id_ocorrencia))
+    ocorrencias_l.append(o)
 
 uw_list[2].writerows(l_ocorrencias)
 
 # BOs
+bos_l = []
+for b in bos:
+    id_bo = bos[b]
+    b = list(b)
+    b.append(str(id_bo))
+    bos_l.append(b)
+
 uw_list[3].writerows(bos)
 
 # Enderecos
+enderecos_l = []
+for e in enderecos:
+    id_endereco = enderecos[endereco]
+    e = list(e)
+    e.append(str(id_endereco))
+    enderecos_l.append(e)
+
 uw_list[4].writerows(enderecos)
 
 # Veiculos
