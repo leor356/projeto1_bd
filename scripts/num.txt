@@ -30,4 +30,4 @@
 	/* DESCR_MARCA_VEICULO */48, /* ANO_FABRICACAO */49, /* ANO_MODELO */50, /* DESCR_TIPO_VEICULO */51)
 
 
-	
+	"DataEntradaIML" 0, "AnoBO" 1, "NumeroBO" 2, "NomeVitima" 3, "NomeDelegaciaOrigem" 4, "NumeroLaudo" 5, "AnoLaudo" 6, "IdadeVitima" 7, "TipoIdade" 8, "Conclusao" 9, "DeclaracaoObito" 10

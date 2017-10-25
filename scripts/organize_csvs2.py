@@ -87,6 +87,9 @@ list_of_files.append(path_out + 'roubo.csv')
 list_of_files.append(path_out + 'furto.csv')
 list_of_files.append(path_out + 'outras_oco.csv')
 
+list_of_files.append(path_out + 'registro_obito_iml.csv')
+list_of_files.append(path_out + 'declaracao_obito.csv')
+
 # Printing list of files
 # for st in list_of_files:
 #     print(st)
@@ -235,8 +238,61 @@ for row in ur:
         ocorrencias[ocorrencia] = id_ocorrencia
         id_ocorrencia += 1
 
-    
+arq.close()    
 
+######
+# IML 
+######
+
+arq_name = path_in + 'iml.csv'
+
+# Opening input file
+arq = open(arq_name, 'rb')
+ur = UnicodeReader(arq, **csv_props)
+
+# Opening output files
+uw_list = []
+warq_list = []
+for warq_name in list_of_files:
+    warq = open(warq_name, 'wb')
+    warq_list.append(warq)
+    uw_list.append(UnicodeWriter(warq, quoting=csv.QUOTE_MINIMAL, **csv_props))
+
+registros_obitos = dict()
+declaracoes_obito = dict()
+id_registro = 1
+id_declaracao = 1
+
+for row in ur:
+    # Declaracao Obito
+    declaracao_obito = (row[10], row[9])
+    if declaracao_obito not in declaracoes_obito:
+        declaracoes_obito[declaracao_obito] = id_declaracao
+        id_declaracao += 1
+
+    # Delegacias
+    delegacia = (row[4], u'')
+    if delegacia not in delegacias:
+        delegacias[delegacia] = id_delegacia
+        id_delegacia += 1
+
+    # bo = ANO_BO, NUM_BO, NUMERO_BOLETIM, BO_INICIADO, BO_EMITIDO, DATAELABORACAO, BO_AUTORIA, NUMERO_BOLETIM_PRINCIPAL, SOLUCAO, ID_DELEGACIA
+    bo = (row[1], row[2], u'', u'', u'', u'', u'', u'', u'', str(delegacias[delegacia]))
+    if bo not in bos:
+        bos[bo] = id_bo
+        id_bo += 1
+
+    # Ocorrencia = ID_BO, DATAOCORRENCIA, PERIDOOCORRENCIA, DATACOMUNICACAO, FLAGRANTE, ID_ENDERECO, EXAME, ESPECIE, RUBRICA, DESDOBRAMENTO, STATUS
+    ocorrencia = (str(bos[bo]), u'', u'', u'', u'', u'0', u'', u'', u'', u'', u'')
+    if ocorrencia not in ocorrencias:
+        ocorrencias[ocorrencia] = id_ocorrencia
+        id_ocorrencia += 1
+
+    # registro_obito = DataEntradaIML, num_laudo, ano_laudo, id_declaracao_obito, id_ocorrencia
+    registro_obito = (row[0], row[5], row[6], str(declaracoes_obito[declaracao_obito]), str(ocorrencias[ocorrencia]))
+    if registro_obito not in registros_obitos:
+        registros_obitos[registro_obito] = id_registro
+        id_registro += 1
 
 # Delegacia
 delegacias_l = []
@@ -319,8 +375,27 @@ uw_list[11].writerows(furto_tab)
 # Outras Ocorrencias
 uw_list[12].writerows(outras_oc_tab)
 
+# registro_obito_iml
+registros_obitos_l = []
+for r in registros_obitos:
+    id_registro_obito = registros_obitos[r]
+    r = list(r)
+    r.append(str(id_registro_obito))
+    registros_obitos_l.append(r)
+
+uw_list[13].writerows(registros_obitos_l)
+
+# declaracao_obito
+declaracoes_obito_l = []
+for d in declaracoes_obito:
+    id_declaracao = declaracoes_obito[d]
+    d = list(d)
+    d.append(str(id_declaracao))
+    declaracoes_obito_l.append(d)
+
+uw_list[14].writerows(declaracoes_obito_l)
+
 # Closing files
 arq.close()
 for warq in warq_list:
     warq.close()
-
